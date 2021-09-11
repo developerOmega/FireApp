@@ -54,6 +54,7 @@ export class UsersComponent implements OnInit {
   }
 
   addUser() {
+    
     this.users.unshift( this.user );
 
     const userCol = firebase.getUserColection( this.user.name )
