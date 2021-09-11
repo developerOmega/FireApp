@@ -100,7 +100,7 @@ export class UsersComponent implements OnInit {
 
       const index = this.users.indexOf( data );
       this.users.splice( index, 1 );
-      
+
     } catch (error) {
       console.error(error);
     }
