@@ -1,0 +1,26 @@
+@import './Styles/_var';
+
+.container {
+  padding: 1rem 1rem;
+  max-width: 1300px;
+  margin: auto;
+
+  display: grid;
+}
+
+
+.header {
+  width: 100%;
+  padding: 1rem 0 4rem;
+  h1 {
+    font-size: 1.4rem;
+    font-weight: 700;
+
+    color: $green ;
+    padding: 0 2rem 1.5rem 0;
+    max-width: fit-content;
+
+    border: $green 3px solid;
+    box-shadow: 8px -8px 0px 0px rgba($pink, 1);
+  }
+}

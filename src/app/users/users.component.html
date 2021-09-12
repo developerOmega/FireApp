@@ -1,83 +1,121 @@
-<form class="form" action="/" method="POST" >
-
-  <div class="field left">
-    <label for="name"> Nombre </label>
-    <input type="text" id="name" name="name" [(ngModel)]="user.data.name" >
-  </div>
-
-  <div class="field left">
-    <label for="date"> Fecha </label>
-    <input type="date" id="date" name="date" [(ngModel)]="user.data.datetime" >
-  </div>
-
-  <div class="field left">
-    <label for="tell"> Telefono </label>
-    <input type="number" id="tell" name="tell" [(ngModel)]="user.data.tell" >
-  </div>
-
-  <div class="field right">
-    <label for="email"> Emails </label>
-    <input type="email" id="email" name="email" [(ngModel)]="email" (change)="addEmail()" >
-
-    <div class="items">
-      <button class="item" type="button" *ngFor="let email of user.data.emails" (click)="dropEmail(email)">
-        <p> {{ email }} </p> 
-      </button>
-    </div>
-  </div>
-
-  <button 
-    class="btn left all" 
-    type="button"
-    *ngIf = "isNew"
-    (click)="addUser()" >  
-    Agregar 
-  </button>
-
-  <button 
-    class="btn left" 
-    type="button"
-    *ngIf = "!isNew"   
-    (click)="updateUser()" >  
-    Guardar 
-  </button>
+<div class="main">
+  <form class="form" action="/" method="POST" >
   
-  <button 
-    class="btn right" 
-    type="button"
-    *ngIf = "!isNew" 
-    (click)="cleanUser()" >  
-    Nuevo 
-  </button>
+    <div class="left ">
+  
+      <div class="field">
+        <label for="name"> Nombre </label>
+        <input 
+          type="text" 
+          id="name" 
+          name="name" 
+          class="{{ form.name ? '' : 'error' }}"
+          placeholder="{{ form.name ? 'Agregar nombre' : alert }}" 
+          [(ngModel)]="user.data.name" >
+      </div>
+    
+      <div class="field">
+        <label for="date"> Fecha </label>
+        <input 
+          type="date" 
+          id="date" 
+          name="date" 
+          class="{{ form.datetime ? '' : 'error' }}"
+          placeholder="{{ form.datetime ? 'Agregar fecha' : alert }}" 
+          [(ngModel)]="user.data.datetime" >
+      </div>
+    
+      <div class="field">
+        <label for="tell"> Telefono </label>
+        <input 
+          type="number" 
+          id="tell" 
+          name="tell" 
+          class="{{ form.tell ? '' : 'error' }}"
+          placeholder="{{ form.tell ? 'Agregar telefono' : alert }}" 
+          [(ngModel)]="user.data.tell">
+      </div>
+  
+    </div>
+  
+    <div class="field right">
+      <label for="email"> Emails </label>
+      <input 
+        type="email" 
+        id="email" 
+        name="email" 
+        class="{{ form.emails ? '' : 'error' }}" 
+        placeholder="{{ form.emails ? 'Agregar email' : alert }}"
+        [(ngModel)]="email" 
+        (change)="addEmail()" >
+  
+      <div class="items">
+        <button class="item" type="button" *ngFor="let email of user.data.emails" (click)="dropEmail(email)">
+          <p> {{ email }} </p>
+        </button>
+      </div>
+    </div>
+  
+    <div class="field-btn">
+      
+      <button 
+        class="btn all" 
+        type="button"
+        *ngIf = "isNew"
+        (click)="addUser()" >  
+        Agregar 
+      </button>
+    
+      <button 
+        class="btn" 
+        type="button"
+        *ngIf = "!isNew"   
+        (click)="updateUser()" >  
+        Guardar 
+      </button>
+      
+      <button 
+        class="btn btn-yellow" 
+        type="button"
+        *ngIf = "!isNew" 
+        (click)="cleanUser()" >  
+        Nuevo 
+      </button>
+  
+    </div>
+  
+  
+  </form>
+  
+  <table class="table">
+    <thead>
+      <tr>
+        <th> Nombre </th>
+        <th> Fecha </th>
+        <th> Telefono </th>
+        <th> Emails </th>
+        <th> No. Emails </th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of users" >
+        <td> {{ user.data.name }} </td>
+        <td> {{ user.data.datetime }} </td>
+        <td> {{ user.data.tell }} </td>
+        <td class="items">
+          <div class="item" *ngFor="let email of user.data.emails" >
+            <p>{{ email }}</p>
+          </div> 
+        </td>
+        <td> {{ user.data.no_emails }} </td>
+        <td class="td-buttons">
+          <button class="btn btn-yellow" type="button" (click)="selectUser(user)" > Editar </button>
+          <button class="btn btn-pink" type="button" (click)="deleteUser(user)"> Eliminar </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
-</form>
 
-<table class="table">
-  <thead>
-    <tr>
-      <th> Nombre </th>
-      <th> Fecha </th>
-      <th> Telefono </th>
-      <th> Emails </th>
-      <th> No. Emails </th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let user of users" >
-      <td> {{ user.data.name }} </td>
-      <td> {{ user.data.datetime }} </td>
-      <td> {{ user.data.tell }} </td>
-      <td>
-        <div class="items" *ngFor="let email of user.data.emails" >
-          <p>{{ email }}</p>
-        </div> 
-      </td>
-      <td> {{ user.data.no_emails }} </td>
-      <td>
-        <button class="btn" type="button" (click)="selectUser(user)" > Editar </button>
-        <button class="btn" type="button" (click)="deleteUser(user)"> Eliminar </button>
-      </td>
-    </tr>
-  </tbody>
-</table>

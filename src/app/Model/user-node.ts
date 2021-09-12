@@ -22,6 +22,7 @@ export class UserNode {
     if( data.name == "" ) {
       return {
         ok: false,
+        model: "name",
         message: "* Nombre obligatorio"
       }
     }
@@ -30,6 +31,7 @@ export class UserNode {
     if( data.datetime == "") {
       return {
         ok: false,
+        model: "datetime",
         message: "* Fecha obligatoria"
       }
     } 
@@ -38,6 +40,7 @@ export class UserNode {
     if( data.tell == 0 ) {
       return {
         ok: false,
+        model: "tell",
         message: "* Telefono obligatorio"
       }
     }
@@ -46,6 +49,7 @@ export class UserNode {
     if( data.emails.length < 1 ) {
       return {
         ok: false,
+        model: "emails",
         message: "* Agregar por lo menos un email"
       }
     } 

@@ -1,9 +1,203 @@
-table {
+@import '../Styles/_var';
+
+.main {
+  display: grid;
+  gap: 4rem;
+}
+
+.form {
+  display: grid;
+  gap: 4rem;
+  grid-template-areas: "left right"
+                       "btn btn";
+
+  padding: 1.5rem;
+
+  border: $green 3px solid;
+  box-shadow: 10px -10px 0px 0px rgba($green, 1);
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    label {
+      font-size: 14px;
+      font-weight: 600;
+      padding-bottom: 1rem;
+    }
+    input {
+      padding: 0.5rem;
+      color: $pink;
+      font-size: 14px;
+
+      border: $green 3px solid;
+      box-shadow: 10px -10px 0px 0px rgba($green, 1);
+      
+      &:focus {
+        outline: none;  
+        animation: flick 2s infinite;
+      }
+
+      &::placeholder {
+        color:rgba( $pink, .5 );
+      }
+
+      &.error {
+        border: $pink 3px solid;
+        box-shadow: 10px -10px 0px 0px rgba($pink, 1);
+      }
+    }
+    .items {
+      margin-left: 3rem;
+      .item {
+        width: 100%;
+        max-width: none;
+
+        border: none;
+        &:hover {
+          cursor: pointer;
+          background:rgba($pink, .6);
+          p {
+            color: white;
+          }
+        }
+      } 
+    }
+  }
+
+  @keyframes flick {
+    0% {
+      border: rgba($green, .5) 3px solid;
+      box-shadow: 10px -10px 0px 0px rgba($green, .5);
+    }
+    50% {
+      border: rgba($green, .7) 3px solid;
+      box-shadow: 10px -10px 0px 0px rgba($green, .7);
+    }
+    100% {
+      border: rgba($green, .5) 3px solid;
+      box-shadow: 10px -10px 0px 0px rgba($green, .5);
+    }
+  }
+
+  .left {
+    grid-area: left;
+
+    display: grid;
+    gap: 2rem;
+  }
+
+  .right {
+    grid-area: right;
+  }
+
+  .field-btn {
+    grid-area: btn;
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: 1fr 1fr;
+
+    .btn.all {
+      grid-column: span 2;
+    }
+  }
+}
+
+table {width: 100%;
   border-spacing: 0rem 3rem;
+  thead {
+    tr {
+      background: $green;
+      box-shadow: 10px -10px 0px 0px rgba($pink, 1);
+
+      th {    
+        padding: 1rem;
+        font-size: 14px;
+      }
+    }
+  }
+
   tbody {
     tr {
-      // box-shadow: 10px -10px 0px 0px rgba(#000000, .5 );
-      background: #ccc;
+      box-shadow: 10px -10px 0px 0px rgba($green, 1);
+      height: 100%;
+
+      td:nth-child(1) {        
+        border-left: $green 3px solid;
+      }
+      td:nth-child(6) {        
+        border-right: $green 3px solid;
+      }
+      td {
+        border-top: $green 3px solid;
+        border-bottom: $green 3px solid;
+        padding: 1rem;
+        text-align: center;
+      }
+      .td-buttons {
+
+        .btn {
+          margin-bottom: 1rem;
+          width: 100%;
+          display: block;
+          box-shadow: none;
+        }
+      }
     }
+  }
+}
+
+.btn {
+  background: $green;
+  padding: .5rem;
+  border: none;
+  color: $pink;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  box-shadow: 10px -10px 0px 0px rgba($pink, 1);
+
+  &:hover{
+    cursor: pointer;
+    color: rgba($pink, .7);
+    background: rgba($green, .7);
+    box-shadow: 10px -10px 0px 0px rgba($pink, .7);
+  }
+
+  &.btn-pink {
+    background: $pink;
+    color: white;
+    box-shadow: 10px -10px 0px 0px rgba($pink, 1);
+    
+    &:hover{
+      background: rgba($pink, .7);
+      box-shadow: 10px -10px 0px 0px rgba($pink, .7);
+    }
+  }
+
+  &.btn-yellow {
+    background: $yellow;
+    color: white;
+    
+    &:hover{
+      background: rgba($yellow, .7);
+    }
+  }
+}
+
+.items {
+  padding: 1rem 0;
+  
+  .item {
+    display: block;
+    max-width:fit-content;
+
+    margin: auto;
+    margin-top: 1rem;
+
+    font-size: 14px;
+    font-weight: 700;
+    background: rgba($green, .6);
+    padding: .3rem;
   }
 }
