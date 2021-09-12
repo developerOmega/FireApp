@@ -1,6 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { getFirestore, doc } from 'firebase/firestore/lite';
-import { firebaseConfig } from '../keys/firebace';
+import { firebaseConfig } from '../keys/firebase';
 
 // Inicializar la base de datos de Firestore
 const app = initializeApp(firebaseConfig);
