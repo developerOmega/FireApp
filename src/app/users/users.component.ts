@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { collection, getDocs, setDoc, updateDoc, deleteDoc, doc } from 'firebase/firestore/lite';
+import { collection, getDocs, setDoc, updateDoc, deleteDoc } from 'firebase/firestore/lite';
 import * as firebase from '../../config/db';
 
-import { User } from '../Model/user';
+import { UserNode } from '../Model/user-node';
 
 
 @Component({
@@ -12,80 +12,88 @@ import { User } from '../Model/user';
 })
 export class UsersComponent implements OnInit {
   
-  user: User = this.defaultUser();
-  users: User[] = <User[]> [];
+  // Propiedad de usuario ( propiedad data es el modelo de formularios
+  user: UserNode = new UserNode;
+
+  // Propiedad lista de usuarios
+  users: UserNode[] = [];
+
+  // modelo para email
   email: string = "";
-  id: string = "";
+
+  // Propiedad que valida si el formulario es nuevo
   isNew: boolean = true;
 
   constructor() {}
-
-  private defaultUser(): User {
-    return {
-      name: "",
-      datetime: "",
-      tell: 0,
-      emails: [],
-      no_emails: 0
-    }
-  }
   
   async ngOnInit() {
 
     try {
+
+      // Obtener lista de documentos de firebase.
       const userCol = collection( firebase.db, 'users');
       const userSnapshot = await getDocs( userCol )
       
+      // Documentos de colección agregar en propiedad de usuarios
       this.users = userSnapshot.docs.map( doc => {
+        
         return {
-          name: doc.data().name,
-          datetime: doc.data().datetime,
-          tell: doc.data().tell,
-          emails: doc.data().emails,
-          no_emails: doc.data().no_emails
+          id: doc.id,
+          data: {
+            id: doc.id,
+            name: doc.data().name,
+            datetime: doc.data().datetime,
+            tell: doc.data().tell,
+            emails: doc.data().emails,
+            no_emails: doc.data().no_emails
+          }
         }
-      } );
 
-      console.log( this.users )
+      });
 
     } catch (error) {
       console.error(error);
     }
   }
 
-  addUser() {
-    
-    this.users.unshift( this.user );
-
-    const userCol = firebase.getUserColection( this.user.name )
-    setDoc( userCol, this.user );
-  }
-
-  addEmail() {
-    this.user.emails.unshift( this.email );
-    this.user.no_emails = this.user.emails.length;
-    this.email = "";
-  }
-
-  selectUser( data:User ) {
-    this.isNew = false;
-    this.user = data;
-    this.id = data.name;
-  }
-  
-  cleanUser() {
-    this.user = this.defaultUser();
-    this.id = "";
-    this.isNew = true;
-  }
 
 
-  async updateUser() {
+  // ================== Método para controlar la db de Firestore =======================
+
+  // Método para agregar usuarios a base de datos de Firestore
+  async addUser() {
+
+    // Constante que valida el formulario
+    const validate = UserNode.validate( this.user.data ); 
+
+    // Si hay un espacio vacío en el formulario, Mostrar mensaje de error
+    if ( validate.ok == false ) {  
+      console.log( validate );
+      return;
+    }
+
     try {
-      const userCol = firebase.getUserColection( this.id );
-      await updateDoc( userCol, <any> this.user );
+      
+      // El id del documento es el nombre del usuario
+      this.user.id = this.user.data.name;
+      
+      // Apilar objeto a propiedad de users
+      this.users.unshift( this.user );
+      
+      // Agregar data a base de datos de Firestore
+      const userCol = firebase.getUserColection( this.user.data.name )
+      await setDoc( userCol, this.user.data );
 
-      this.id = "";
+    } catch (error) {
+      console.error(error); 
+    }
+  }
+
+  // Actualizar usuario de la base de datos de Firestore
+  async updateUser() {
+    try { 
+      const userCol = firebase.getUserColection( this.user.id );
+      await updateDoc( userCol, <any> this.user.data );
       this.isNew = true;
 
     } catch (error) {
@@ -93,18 +101,55 @@ export class UsersComponent implements OnInit {
     }
   }
 
-  async deleteUser( data:User ) {
+  // Eliminar usuario de la base de datos de Firestore
+  async deleteUser( data:UserNode ) {
     try {
       
-      const userCol = firebase.getUserColection( data.name );
+      const userCol = firebase.getUserColection( data.id );
       await deleteDoc( userCol );
 
+      // Quitar usuario de la lista de usuarios
       const index = this.users.indexOf( data );
       this.users.splice( index, 1 );
 
     } catch (error) {
       console.error(error);
     }
+  }
+
+  
+
+  // =============== Métodos para controlar información de formulario ====================
+
+  // Método que selecciona el usuario de una lista al momento de presionar el botón de editar.
+  selectUser( data:UserNode ) {
+    this.isNew = false;
+    this.user = data;
+  }
+  
+  // Limpiar la data del formulario
+  cleanUser() {
+    this.user = new UserNode;
+    this.isNew = true;
+  }
+
+
+
+  // ============================ Métodos para email =================================
+
+  // Método para agregar(apilar) email a propiedad emails de data de usuario
+  addEmail() {
+    this.user.data.emails.unshift( this.email );
+
+    // Propiedad no_emails de data de usuario es igual al contador de emails
+    this.user.data.no_emails = this.user.data.emails.length;
+    this.email = "";
+  }
+
+  // Método para quitar email de propiedad emails
+  dropEmail(email:string) {
+    const index = this.user.data.emails.indexOf( email );
+    this.user.data.emails.splice( index, 1 );
   }
 
 }
