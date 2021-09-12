@@ -2,6 +2,24 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.2.4.
 
+## Agregar keys
+
+Para agregar las llaves de autenticación de firestore, debes de crear el directorio: `src/keys` con el archivo `firebase.ts`.
+El archivo `firebase.ts` debe de tener la siguiente información:
+
+```js
+export const firebaseConfig = {
+  apiKey: "your apiKey",
+  authDomain: "your authDomain",
+  projectId: "your projectId",
+  storageBucket: "your storageBucket",
+  messagingSenderId: "your messagingSenderId",
+  appId: "your appId",
+  measurementId: "your measurementId"
+};
+```
+
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
