@@ -97,7 +97,8 @@
 }
 
 // Tabla
-table {width: 100%;
+table {
+  width: 100%;
   border-spacing: 0rem 3rem;
 
   // Head
@@ -201,5 +202,23 @@ table {width: 100%;
     font-weight: 700;
     background: rgba($green, .6);
     padding: .3rem;
+  }
+}
+
+// Responsive web
+
+@media screen and ( max-width: 640px ) {
+  .form {
+    grid-template-areas: "left left"
+                         "right right"
+                         "btn btn";
+  }
+}
+
+@media screen and ( max-width: 960px ) {
+  table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
   }
 }
