@@ -191,6 +191,7 @@ export class UsersComponent implements OnInit {
 
     // Propiedad no_emails de data de usuario es igual al contador de emails
     this.user.data.no_emails = this.user.data.emails.length;
+
     this.email = "";
   }
 
@@ -198,6 +199,9 @@ export class UsersComponent implements OnInit {
   dropEmail(email:string) {
     const index = this.user.data.emails.indexOf( email );
     this.user.data.emails.splice( index, 1 );
+    
+    // Propiedad no_emails de data de usuario es igual al contador de emails
+    this.user.data.no_emails = this.user.data.emails.length;
   }
 
 }
